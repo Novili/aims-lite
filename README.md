@@ -1,21 +1,17 @@
-# AIMS-Lite V2.1
+# AIMS-Lite V2.2 — lectura al regresar de la cámara
 
-Toca el recuadro de la placa para solicitar la cámara nativa del teléfono. Safari/iOS controla la interfaz y puede ofrecer opciones adicionales. Toma la foto y confirma Usar foto; al regresar, la aplicación ejecuta OCR automáticamente. Revisa o edita la placa y pulsa Confirmar y guardar. No se guarda por confianza automática.
+Esta revisión procesa la foto automáticamente tanto al recibir change/input del selector como al volver a la página con una foto pendiente. Evita lecturas duplicadas del mismo archivo. Desplaza la vista a 02 / Confirmar registro y muestra allí preparación, progreso, resultado o error. El OCR rellena Placa y no modifica el estado seleccionado. Solo Confirmar y guardar crea el registro del lote activo en 03 / Historial.
 
-Estado: selector AR (Arkansas), CA (California, inicial), NV (Nevada), OR (Oregon), WA (Washington), ordenado por abreviatura. Se conserva la selección para la próxima foto; el OCR no cambia el estado.
+## Actualizar
+1. Exporta CSV de tu historial por precaución.
+2. Descomprime AIMS-Lite-V2.2.zip y sube TODO su contenido a la raíz del repositorio Novili/aims-lite, incluida vendor. Reemplaza archivos; no subas el ZIP como archivo.
+3. Espera que termine el despliegue de Pages. Abre la app con conexión, ciérrala y vuelve a abrirla. Debe indicar V2.2 arriba. No borres datos de Safari: contienen tu historial.
+4. La versión usa rutas de código con ?v=2.2 y nueva caché para evitar mezclar código viejo. No se ha podido verificar el sitio publicado desde este entorno.
+5. Toca el recuadro, toma una foto y elige Usar foto. Al volver debes llegar a Confirmar registro y ver Preparando lectura / Leyendo foto. Espera el resultado: se coloca en Placa. Verifica/edita, elige estado y lote, confirma; revisa Historial.
 
-El OCR lee la imagen completa y, si no encuentra una propuesta con suficiente confianza, intenta una zona central ampliada con contraste. No garantiza precisión: usa una foto cercana, placa horizontal y sin reflejos. Si falla, puedes escribir la placa. No se probó con placas reales en iPhone.
+Si el campo no se llena, el mensaje junto a Placa debe indicar si la imagen no pudo abrirse, si falló el motor OCR o si no encontró una placa clara. Ese mensaje permite distinguir el fallo de una versión anterior en caché. No se garantiza exactitud con fotos reales: la placa debe estar cerca y legible. Estado manual: AR, CA, NV, OR, WA; CA inicial.
 
-## Publicación
-Exporta primero tus registros V1/V2. Descomprime AIMS-Lite-V2.1.zip y sube su contenido completo (incluida vendor) a la raíz de Novili/aims-lite, reemplazando archivos. No subas solo el ZIP. Confirma el commit. Con Pages configurado para main / raíz, espera el despliegue. Abre https://novili.github.io/aims-lite/ con conexión; cierra y reabre si sigue mostrando una versión anterior. Debe indicar V2.1. No borres datos del navegador para actualizar. No se publicó desde este entorno; no hay credenciales de escritura disponibles.
+## Validación y límites
+Pasaron comprobación de sintaxis y pruebas simuladas de recepción de foto, lectura automática, segundo intento OCR, eventos duplicados, edición, confirmación y conservación de estado. No se ejecutó una prueba física de iPhone ni una nueva prueba real del motor OCR; Edge está bloqueado por permisos en este entorno. Se corrigió el manejo de eventos y la visibilidad del proceso, sin afirmar que se haya identificado la causa exacta del fallo reportado.
 
-## Sin conexión y privacidad
-Con conexión pulsa Preparar OCR sin conexión y espera confirmación; después verifica modo avión. Safari puede eliminar cachés y registros. Exporta CSV frecuentemente. No se suben ni guardan fotos; solo se guarda texto confirmado en este navegador. Se mantiene la clave de historial de V1. Safari y PWA pueden tener datos distintos. Todo el motor y modelo se incluyen, sin API, CDN ni servicios de pago.
-
-## Verificación de esta revisión
-Pasaron revisión de sintaxis y una prueba de flujo con cámara/OCR simulados: apertura del selector desde recuadro, lectura automática, segundo intento, edición, guardado explícito y conservación de estado. La ejecución de Edge está bloqueada por permisos de este entorno. No se afirma una nueva prueba real de OCR ni prueba física de iPhone. La versión anterior sí leyó una imagen sintética sin red en Edge; eso no demuestra exactitud en placas reales.
-
-## Prueba en tu iPhone
-Comprueba V2.1 → toca recuadro → toma foto → Usar foto → espera OCR → corrige placa si hace falta → selecciona estado → confirma y guarda → verifica historial tras recarga. Repite con una foto ilegible y cancelando cámara. Prueba también instalada en inicio y sin conexión después de preparar OCR. Operador y localidad son obligatorios para guardar.
-
-Dependencias: Tesseract.js 6.0.1, core 6.0.0 y modelo eng local de @tesseract.js-data/eng 1.0.0, con licencias incluidas en vendor.
+OCR gratuito incluido localmente (Tesseract.js 6.0.1, core 6.0.0, modelo eng y licencias en vendor). Fotos no subidas ni persistidas. Historial local compatible con V1/V2. Para OCR sin conexión, prepara el motor con internet antes y prueba modo avión. iOS puede eliminar cachés y datos: exporta CSV con frecuencia. No hay sincronización ni respaldo automático. No se publicó desde este entorno por falta de credenciales GitHub.
