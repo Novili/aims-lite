@@ -1,7 +1,7 @@
 {
-  "name": "AIMS-Lite V2",
+  "name": "AIMS-Lite",
   "short_name": "AIMS-Lite",
-  "lang": "es",
+  "lang": "en",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

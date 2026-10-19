@@ -17,6 +17,6 @@
   }return map;
  }
  function count(map,plate,jurisdiction){return map.get(key(plate,jurisdiction))||{week:0,month:0};}
- const text=n=>n.week+' registros esta semana · '+n.month+' este mes';
+ const text=n=>n.week+' records this week · '+n.month+' this month';
  root.AimsVisits={bounds,tally,count,text};if(typeof module!=='undefined')module.exports=root.AimsVisits;
 })(typeof window==='undefined'?globalThis:window);
