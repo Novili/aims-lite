@@ -1,5 +1,5 @@
-const CACHE='aims-lite-v2-3-root', OCR=CACHE+'-ocr';
-const FILES=['./','./index.html','./styles.css?v=2.3','./app.js?v=2.3','./ocr-utils.js?v=2.3','./ocr-image.js?v=2.3','./manifest.webmanifest','./icon-192.png','./icon-512.png','./tesseract.min.js'];
+const CACHE='aims-lite-v2-4-root', OCR=CACHE+'-ocr';
+const FILES=['./','./index.html','./styles.css?v=2.4','./app.js?v=2.4','./visits.js?v=2.4','./ocr-utils.js?v=2.4','./ocr-image.js?v=2.4','./manifest.webmanifest','./icon-192.png','./icon-512.png','./tesseract.min.js'];
 const ENGINE=['worker.min.js','tesseract-core-lstm.wasm.js','tesseract-core-simd-lstm.wasm.js','eng.traineddata.gz'].map(x=>'./'+x);
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES.map(url=>new Request(url,{cache:'reload'})))).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('aims-lite-')&&![CACHE,OCR].includes(k)).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
