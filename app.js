@@ -43,25 +43,21 @@ async function recognizePhoto(){
  let timer;
  try{const timeout=new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('Tiempo de OCR agotado. Prueba otra foto.')),90000);});
  const data=await Promise.race([(async()=>{
- const w=await getWorker();let best=null;
- // Try the whole image first. A real padded crop avoids rectangle artifacts.
- for(const region of [null,[0.1,0.25,0.8,0.5]]){
-  const c=document.createElement('canvas'),ctx=c.getContext('2d');
-  const [x,y,rw,rh]=region||[0,0,1,1];
-  const width=photoCanvas.width*rw,height=photoCanvas.height*rh;
-  const scale=Math.min(2,1800/width);c.width=Math.round(width*scale)+40;c.height=Math.round(height*scale)+40;
-  ctx.fillStyle='white';ctx.fillRect(0,0,c.width,c.height);ctx.filter=region?'grayscale(1) contrast(1.4)':'none';
-  ctx.drawImage(photoCanvas,photoCanvas.width*x,photoCanvas.height*y,width,height,20,20,c.width-40,c.height-40);
-  const result=(await w.recognize(c)).data;const guess=AimsOCR.suggest(result.text);
-  if(!best||(guess.plate&&!best.guess.plate)||(!!guess.plate===!!best.guess.plate&&result.confidence>best.confidence))best={...result,guess};
-  if(guess.plate&&result.confidence>=75)break;
- }return best;
+ const w=await getWorker();
+ const source=photoCanvas.getContext('2d').getImageData(0,0,photoCanvas.width,photoCanvas.height);
+ return AimsImage.scan(source,async(image,pass)=>{
+  await w.setParameters({tessedit_pageseg_mode:pass===0?'11':'7',tessedit_char_whitelist:pass===0?'':'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',user_defined_dpi:'300'});
+  const c=document.createElement('canvas');c.width=image.width;c.height=image.height;
+  c.getContext('2d').putImageData(new ImageData(image.data,image.width,image.height),0,0);
+  say('Leyendo foto automáticamente: intento '+(pass+1)+' de '+AimsImage.regions.length+'…');
+  return (await w.recognize(c)).data;
+ },AimsOCR.suggest);
 })(),timeout]);
  const suggestion=data.guess;$('plate').value=suggestion.plate;
  $('plate').dispatchEvent(new Event('input',{bubbles:true}));
  $('plate').placeholder='Escribe la placa';$('entry').scrollIntoView({behavior:'smooth',block:'start'});
  $('ocrInfo').textContent='Texto leído: '+data.text.slice(0,600)+' · Confianza OCR: '+Math.round(data.confidence||0)+'%';
- say(suggestion.plate?'Sugerencia editable. Revisa O/0, I/1, jurisdicción y lote antes de confirmar.':'Sin placa clara. Acerca la foto, vuelve a tomarla o escribe manualmente.');
+ say(suggestion.plate?(data.confidence<75?'Lectura de baja confianza: verifica TODOS los caracteres. ':'')+'Sugerencia editable. Revisa O/0, I/1, jurisdicción y lote antes de confirmar.':'Sin placa clara. Acerca la foto, vuelve a tomarla o escribe manualmente.');
  }catch(e){if(worker){worker.terminate();worker=null;}say('OCR falló: '+e.message+' Puedes registrar manualmente.');}
  finally{clearTimeout(timer);controls(false);$('plate').placeholder='ABC-1234';}
 }
