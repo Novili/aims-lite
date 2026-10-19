@@ -1,27 +1,30 @@
-# AIMS-Lite V1
+# AIMS-Lite V2 — publicación y pruebas
 
-Prototipo gratuito, móvil y en español. Sin compilación, cuentas, claves API, servicios externos ni dependencias. No es un sistema de control de acceso de producción.
+## Publicar sin costo
+1. Exporta CSV de V1 en cada navegador o app instalada que uses.
+2. Descomprime AIMS-Lite-V2.zip. En Novili/aims-lite → Code → Add file → Upload files, arrastra TODOS los archivos y la carpeta vendor a la raíz. No subas el ZIP ni una carpeta contenedora. Conserva nombres y subcarpetas.
+3. Confirma el commit. El paquete reemplaza la aplicación V1; el historial conserva la misma clave local y no se borra. No cambia ajustes de Pages.
+4. Si Pages ya publica main / raíz, espera el despliegue en Actions. Si no, Settings → Pages → Deploy from a branch → main → /(root).
+5. Abre https://novili.github.io/aims-lite/ con conexión. Cierra y vuelve a abrir si aún muestra V1: el nuevo service worker puede necesitar una segunda apertura para servir todos los archivos nuevos. No borres los datos del sitio para actualizar.
+6. Comprueba que muestra V2. Pulsa Preparar OCR sin conexión y espera confirmación. Prueba modo avión antes de salir al campo.
 
-## Publicar en GitHub Pages
-1. Descomprime AIMS-Lite-V1.zip. Sube **el contenido** al repositorio (no subas solo el ZIP ni una carpeta contenedora). index.html debe quedar en la raíz junto a app.js, styles.css, sw.js, manifest.webmanifest e iconos.
-2. En GitHub: Settings → Pages → Deploy from a branch → selecciona tu rama (normalmente main) y /(root) → Save.
-3. Espera el despliegue y abre la URL HTTPS que muestra Pages. Para el repositorio Novili/aims-lite, la URL esperada es https://novili.github.io/aims-lite/ cuando Pages esté habilitado. Este paquete no publica ni cambia tu repositorio.
-4. En iPhone abre en Safari, permite cámara y usa Compartir → Agregar a pantalla de inicio. Visita una vez con conexión hasta ver “App lista para abrir sin conexión”.
+Alternativa con Git: aplica AIMS-Lite-V2.patch con `git apply --binary`, revisa los cambios, agrega los archivos y publica un commit en la rama que usa Pages.
 
-## Funciones implementadas
-- Vista de cámara de video tras pulsar Activar cámara, cámara trasera preferida, sin audio. Requiere permiso y HTTPS (o localhost para desarrollo). Se detiene al ocultar la app.
-- Placa y estado/provincia editables, localidad Hospital, lotes Pacientes / Doctores / Servicio. El lote activo se usa al guardar; cambiarlo no modifica registros anteriores.
-- Historial local con fecha ISO y visualización en hora del dispositivo; persiste al recargar si el navegador permite localStorage.
-- CSV UTF-8 con BOM y comillas, todos los lotes, fecha ISO y local. Se neutralizan prefijos de fórmulas de hojas de cálculo.
-- Manifest, iconos y service worker con rutas relativas compatibles con subcarpetas de Pages. La app se puede abrir sin conexión después del primer cacheo completo.
+## Uso en iPhone (pendiente de validación real)
+- Safari HTTPS → Compartir → Agregar a pantalla de inicio. El formulario usa campos de 16 px o mayores y el selector nativo de fotos/cámara con preferencia trasera.
+- Completa operador y localidad. Selecciona Pacientes, Doctores o Servicio antes de confirmar; cambiar lote no altera registros anteriores.
+- Toma foto cercana con la placa horizontal, legible y sin reflejos. Pulsa Leer placa. Revisa cada carácter y jurisdicción; se admite entrada manual aunque falle OCR. La opción central es experimental: usa la imagen completa si no lee bien.
+- Guarda un registro por lote y recarga; verifica fecha/hora, operador y localidad. Comprueba que los registros V1 siguen visibles.
+- Exporta CSV y guarda en Archivos. Prueba denegar cámara, cancelar selector y una imagen ilegible: el formulario debe seguir funcionando.
+- Prepara OCR con conexión; activa modo avión, cierra/abre la PWA y lee otra foto. Comprueba también Safari por separado. No se ha probado en un iPhone físico por el autor de este paquete.
 
-## Experimental y límites
-El OCR usa exclusivamente TextDetector si existe en el navegador. No se incluye un motor OCR externo ni se descargan modelos. No se garantiza disponibilidad en iPhone; si falta, el botón se desactiva con explicación. Lee texto de una captura en memoria de todo el cuadro y lo propone como placa; no es un detector de matrículas. Nunca guarda automáticamente. Estado/provincia siempre manual. No hay lectura continua, búsqueda en bases oficiales, sincronización, cuentas, conteo de ocupación ni validación legal.
+## Alcance y límites
+Tesseract.js 6.0.1 / core 6.0.0 y modelo inglés local, sin API ni claves ni servidor de pago. La jurisdicción usa una lista limitada de nombres explícitos reconocidos: California, Florida, Texas, New York, New Jersey, Arizona, Nevada, Puerto Rico, Ontario, Quebec, Jalisco, Nuevo León, Chihuahua, Sonora, Baja California, Ciudad de México y Estado de México. No se adivina por patrón ni se consulta una base oficial. Otros nombres requieren entrada manual. OCR experimental; no es detección especializada de matrículas ni garantiza exactitud.
 
-No se envían ni guardan imágenes/video. Los registros quedan en este navegador/origen, visibles a quien use el mismo perfil. Safari y pantalla de inicio pueden tener datos separados. Limpiar datos o perder el dispositivo puede eliminar el historial. Exporta CSV regularmente; no hay importación CSV en V1. El modo privado o una cuota agotada puede impedir guardar, en cuyo caso se muestra error. La cámara y el OCR dependen del navegador y deben probarse en el iPhone real.
+No se suben ni persisten fotos. El navegador procesa la foto y conserva solo texto. El historial permanece en localStorage, compatible con V1; si no puede leerse, no se sobrescribe hasta borrado explícito. No hay sincronización, recuperación en nube ni importación CSV. Eliminar datos, perder el dispositivo o la expulsión de almacenamiento de iOS puede perder registros y cachés. Exporta frecuentemente. El OCR sin conexión requiere preparación completa previa y caché conservada. El formulario se almacena separado del motor para poder seguir trabajando manualmente si la preparación falla.
 
-## Prueba manual en iPhone
-Abre la URL HTTPS → permite cámara → comprueba video y Detener → escribe placa y estado → guarda un registro en cada lote → recarga y verifica los tres registros → exporta y abre el CSV → instala en inicio → abre con conexión → modo avión y reabre → verifica formulario e historial. Prueba denegar cámara: la captura manual debe seguir disponible. Borrar historial requiere confirmación.
+## Dependencias incluidas
+vendor contiene distribución de tesseract.js, dos núcleos LSTM con WASM incrustado (SIMD y no SIMD), modelo eng de @tesseract.js-data/eng 1.0.0 y licencias/notices correspondientes. Descargados desde npm; no hay dependencias en CDN al ejecutar. No es necesario npm ni compilación para publicar.
 
-## Desarrollo
-Sirve esta carpeta con `python -m http.server 8000` y abre localhost:8000 en la misma computadora. Para iPhone usa Pages HTTPS. Abrir index.html directamente no prueba instalación ni caché. Para nuevas versiones incrementa CACHE en sw.js.
+## Pruebas de escritorio
+Se verificó en Edge sin interfaz a 390×844: conservación de registros V1, confirmación manual, lote, operador/localidad, persistencia tras recarga, preparación del motor, recarga sin red y OCR real de imagen sintética ABC1234 con confianza 92%. Sin errores JavaScript en ese recorrido. La opción de recorte central no leyó esa imagen; por eso se deja desactivada por defecto. Estas pruebas no certifican cámara, Safari, instalación PWA ni almacenamiento en iOS.
