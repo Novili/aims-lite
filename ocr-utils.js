@@ -1,5 +1,5 @@
 (function(root){
- const jurisdictions=['California','Florida','Texas','New York','New Jersey','Arizona','Nevada','Puerto Rico','Ontario','Quebec','Jalisco','Nuevo Leon','Chihuahua','Sonora','Baja California','Ciudad de Mexico','Estado de Mexico'];
+ const jurisdictions=['Arkansas','Oregon','Washington','California','Florida','Texas','New York','New Jersey','Arizona','Nevada','Puerto Rico','Ontario','Quebec','Jalisco','Nuevo Leon','Chihuahua','Sonora','Baja California','Ciudad de Mexico','Estado de Mexico'];
  const normalize=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase();
  function suggest(text){
   let cleaned=normalize(text),state='';

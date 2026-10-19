@@ -1,4 +1,4 @@
-const CACHE='aims-lite-v2-1', OCR=CACHE+'-ocr';
+const CACHE='aims-lite-v2-2', OCR=CACHE+'-ocr';
 const FILES=['./','./index.html','./styles.css','./app.js','./ocr-utils.js','./manifest.webmanifest','./icon-192.png','./icon-512.png','./vendor/tesseract.min.js'];
 const ENGINE=['worker.min.js','tesseract-core-lstm.wasm.js','tesseract-core-simd-lstm.wasm.js','eng.traineddata.gz'].map(x=>'./vendor/'+x);
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)).then(()=>self.skipWaiting())));
