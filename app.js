@@ -13,7 +13,7 @@ function controls(lock){busy=lock;document.querySelector('#entry button').disabl
 async function getWorker(){
  if(worker)return worker;
  if(!window.Tesseract)throw Error('No se cargó Tesseract. Reconecta y recarga.');
- const base=new URL('./vendor/',location.href).href;
+ const base=new URL('./',location.href).href;
  worker=await Tesseract.createWorker('eng',1,{workerPath:base+'worker.min.js',corePath:base,langPath:base.slice(0,-1),workerBlobURL:false,cacheMethod:'none',logger:m=>{$('ocrInfo').textContent=m.status+' '+Math.round((m.progress||0)*100)+'%';if($('scanStatus'))$('scanStatus').textContent='Leyendo foto… '+Math.round((m.progress||0)*100)+'%. Espera el resultado aquí.';}});
  await worker.setParameters({tessedit_pageseg_mode:'11'});return worker;
 }
