@@ -5,3 +5,7 @@
 
 select{width:100%;font:inherit;font-size:16px;padding:12px;border:1px solid #bbcfc4;border-radius:10px;background:#fcfdfa}select:focus-visible{outline:3px solid #c79d41;outline-offset:3px}#capture{width:100%;font-size:18px;min-height:56px;margin-top:12px}#scanStatus,#visitsPreview{font-size:14px}#preview{max-height:240px;object-fit:contain}button{font-family:inherit}
 .actions{flex-wrap:wrap}.actions button{flex:1 1 140px}#voice{width:100%;margin-top:10px}
+
+.compact-fields{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap}.field{min-width:0}.city-field{width:calc(14ch + 44px);max-width:100%}.lot-field{width:calc(4ch + 44px)}.operator-field{width:calc(3ch + 28px)}#operator{text-transform:uppercase}.plate-field{width:calc(12ch + 28px);max-width:100%}#plate{font-size:20px;letter-spacing:1px}.state-field{width:76px}#stateName{display:block;font-size:11px;line-height:1.25;color:#60736f;margin-top:4px;overflow-wrap:normal;width:110px}.plate-row{gap:16px}.compact-fields select,.compact-fields input{height:48px}#state{padding-left:10px;padding-right:20px}
+
+.plate-field{font-size:20px;width:calc(12ch + 40px)}
