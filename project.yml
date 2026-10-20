@@ -1,0 +1,42 @@
+name: AIMSLite
+options:
+  bundleIdPrefix: com.aimslite
+  deploymentTarget:
+    iOS: '17.0'
+settings:
+  base:
+    SWIFT_VERSION: '5.0'
+    TARGETED_DEVICE_FAMILY: '1'
+    GENERATE_INFOPLIST_FILE: YES
+    INFOPLIST_KEY_NSSpeechRecognitionUsageDescription: 'Speech recognition is used to dictate license plates. The operator verifies before saving.'
+    INFOPLIST_KEY_NSMicrophoneUsageDescription: 'The microphone is used only while dictating a plate.'
+    INFOPLIST_KEY_NSCameraUsageDescription: 'The camera is used to read plates in authorized parking areas. No photos are stored.'
+    INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+    INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: YES
+    SUPPORTS_MACCATALYST: NO
+    CODE_SIGN_STYLE: Automatic
+    PRODUCT_BUNDLE_IDENTIFIER: com.aimslite.ios
+    SWIFT_STRICT_CONCURRENCY: minimal
+schemes:
+  AIMSLite:
+    build:
+      targets:
+        AIMSLite: all
+    test:
+      targets:
+        - AIMSLiteTests
+targets:
+  AIMSLite:
+    type: application
+    platform: iOS
+    sources:
+      - path: AIMSLite
+    dependencies:
+      - sdk: libsqlite3.tbd
+  AIMSLiteTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: AIMSLiteTests
+    dependencies:
+      - target: AIMSLite

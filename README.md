@@ -1,17 +1,34 @@
-# AIMS-Lite V2.2 — lectura al regresar de la cámara
+# AIMS-Lite iOS — Paso 3 · versión inicial
 
-Esta revisión procesa la foto automáticamente tanto al recibir change/input del selector como al volver a la página con una foto pendiente. Evita lecturas duplicadas del mismo archivo. Desplaza la vista a 02 / Confirmar registro y muestra allí preparación, progreso, resultado o error. El OCR rellena Placa y no modifica el estado seleccionado. Solo Confirmar y guardar crea el registro del lote activo en 03 / Historial.
+Código fuente de una primera aplicación **nativa** para iPhone: cámara real, OCR de Apple Vision, confirmación/corrección, selección manual de jurisdicción, lote, operador, registro con fecha/hora local y UTC implícito (Date), SQLite e historial persistente.
 
-## Actualizar
-1. Exporta CSV de tu historial por precaución.
-2. Descomprime AIMS-Lite-V2.2.zip y sube TODO su contenido a la raíz del repositorio Novili/aims-lite, incluida vendor. Reemplaza archivos; no subas el ZIP como archivo.
-3. Espera que termine el despliegue de Pages. Abre la app con conexión, ciérrala y vuelve a abrirla. Debe indicar V2.2 arriba. No borres datos de Safari: contienen tu historial.
-4. La versión usa rutas de código con ?v=2.2 y nueva caché para evitar mezclar código viejo. No se ha podido verificar el sitio publicado desde este entorno.
-5. Toca el recuadro, toma una foto y elige Usar foto. Al volver debes llegar a Confirmar registro y ver Preparando lectura / Leyendo foto. Espera el resultado: se coloca en Placa. Verifica/edita, elige estado y lote, confirma; revisa Historial.
+## Preparación en una Mac
 
-Si el campo no se llena, el mensaje junto a Placa debe indicar si la imagen no pudo abrirse, si falló el motor OCR o si no encontró una placa clara. Ese mensaje permite distinguir el fallo de una versión anterior en caché. No se garantiza exactitud con fotos reales: la placa debe estar cerca y legible. Estado manual: AR, CA, NV, OR, WA; CA inicial.
+1. Instala Xcode actual desde Apple y sus componentes de iOS.
+2. Instala XcodeGen desde https://github.com/yonaskolb/XcodeGen (`brew install xcodegen`, si utilizas Homebrew).
+3. En Terminal, abre esta carpeta y ejecuta: `xcodegen generate`.
+4. Abre `AIMSLite.xcodeproj` con Xcode.
+5. Selecciona el target AIMSLite, configura tu Team y cambia el Bundle Identifier por uno único.
+6. Selecciona un **iPhone físico** compatible con iOS 17 o posterior; el simulador no ofrece una cámara real utilizable para esta prueba.
+7. Compila con Cmd+B y ejecuta con Cmd+R. Acepta el permiso de cámara.
+8. Para ejecutar pruebas: Cmd+U.
 
-## Validación y límites
-Pasaron comprobación de sintaxis y pruebas simuladas de recepción de foto, lectura automática, segundo intento OCR, eventos duplicados, edición, confirmación y conservación de estado. No se ejecutó una prueba física de iPhone ni una nueva prueba real del motor OCR; Edge está bloqueado por permisos en este entorno. Se corrigió el manejo de eventos y la visibilidad del proceso, sin afirmar que se haya identificado la causa exacta del fallo reportado.
+## Flujo
 
-OCR gratuito incluido localmente (Tesseract.js 6.0.1, core 6.0.0, modelo eng y licencias en vendor). Fotos no subidas ni persistidas. Historial local compatible con V1/V2. Para OCR sin conexión, prepara el motor con internet antes y prueba modo avión. iOS puede eliminar cachés y datos: exporta CSV con frecuencia. No hay sincronización ni respaldo automático. No se publicó desde este entorno por falta de credenciales GitHub.
+En Inicio introduce lote y operador → Iniciar escáner → apunta a placa → verifica o edita el texto → selecciona la jurisdicción → Guardar → consulta Historial.
+
+## Alcance y limitaciones
+
+- Es código entregado **sin compilación ni pruebas en Xcode**, porque este entorno no cuenta con macOS/Xcode. Pueden requerirse ajustes según la versión de Xcode.
+- Apple Vision detecta **texto**, no específicamente placas. En esta versión se filtran candidatos por longitud y caracteres; no existe todavía un detector de placa Core ML ni reconocimiento fiable del estado/provincia.
+- No hay confirmación automática: cada observación requiere Guardar.
+- No se guardan fotografías, solo metadatos de las lecturas confirmadas.
+- El conteo de 'veces vista' se hace por placa normalizada + jurisdicción seleccionada.
+- Para reconocer placas particulares con letras solamente, o formatos más cortos/largos, será necesario ampliar reglas de validación por jurisdicción.
+- El historial actual muestra una fila por lectura; falta una vista agrupada por placa.
+- No implementados aún: CSV, sincronización, permisos de operador, cifrado adicional de base local, control de retención, ubicación, listas de autorizados, modelos específicos de placas, pruebas físicas y Android.
+- Para uso profesional se debe validar precisión y privacidad en estacionamientos autorizados antes del despliegue.
+
+## Archivos
+
+`project.yml` configuración de XcodeGen; `Models.swift` reglas de placa; `Database.swift` SQLite; `Store.swift` lógica de guardado; `Camera.swift` AVFoundation + Vision; `Views.swift` interfaces SwiftUI; `AIMSLiteTests.swift` pruebas iniciales.
