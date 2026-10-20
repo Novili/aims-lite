@@ -25,3 +25,15 @@ button[aria-pressed=true],.primary{background:var(--primary);color:var(--on-prim
 button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline-color:var(--focus)}
 .appearance{display:flex;justify-content:flex-end;align-items:center;gap:10px;margin-top:14px}
 .appearance label{margin:0}.appearance select{width:auto;min-width:100px}
+
+/* Keep capture and confirmation together in a short entry card. */
+main{padding-top:14px}.intro{padding:6px 4px}.intro p{margin:4px 0}.intro .eyebrow{font-size:10px}
+.appearance{margin-top:8px}.appearance select{padding:8px 10px;min-height:44px}
+.card{padding:14px;margin:10px 0}.card h2{margin-bottom:4px}
+.compact-fields{gap:8px}.city-field{font-size:14px;width:calc(14ch + 32px)}.lot-field{width:76px}
+.compact-fields label{margin-top:8px;margin-bottom:4px}.compact-fields select,.compact-fields input{height:44px;padding-top:8px;padding-bottom:8px}
+.photo-inline{margin-top:10px}#capture{width:auto;min-height:44px;margin:0;padding:9px 16px;font-size:15px}
+#scanStatus,#ocrInfo,#visitsPreview{font-size:12px;margin:6px 0}#visitsPreview:empty{display:none}
+#preview{display:block;max-height:120px;margin-top:8px}#preview[hidden]{display:none}
+#voice{margin-top:8px;min-height:44px;padding:8px 12px}.full{margin-top:8px}.plate-row{gap:12px}
+@media(max-width:400px){main{padding-left:12px;padding-right:12px}.operator-field{width:56px}.city-field{width:calc(14ch + 28px)}.lot-field{width:72px}.compact-fields select{padding-left:8px;padding-right:20px}}
