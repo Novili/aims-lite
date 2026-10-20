@@ -9,3 +9,19 @@ select{width:100%;font:inherit;font-size:16px;padding:12px;border:1px solid #bbc
 .compact-fields{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap}.field{min-width:0}.city-field{width:calc(14ch + 44px);max-width:100%}.lot-field{width:calc(4ch + 44px)}.operator-field{width:calc(3ch + 28px)}#operator{text-transform:uppercase}.plate-field{width:calc(12ch + 28px);max-width:100%}#plate{font-size:20px;letter-spacing:1px}.state-field{width:76px}#stateName{display:block;font-size:11px;line-height:1.25;color:#60736f;margin-top:4px;overflow-wrap:normal;width:110px}.plate-row{gap:16px}.compact-fields select,.compact-fields input{height:48px}#state{padding-left:10px;padding-right:20px}
 
 .plate-field{font-size:20px;width:calc(12ch + 40px)}
+
+/* Day is deliberately high contrast for outdoor use. */
+:root{--page:#fff;--surface:#fff;--text:#102321;--muted:#344b45;--border:#788e83;--field:#fff;--button:#edf3ed;--primary:#103c2e;--on-primary:#fff;--danger:#992720;--focus:#856000;--tag:#e2ebe4}
+:root[data-theme=night]{--page:#101719;--surface:#192326;--text:#e6eeeb;--muted:#b2c5bc;--border:#60776c;--field:#111c1f;--button:#25372f;--primary:#b4d4b8;--on-primary:#10261a;--danger:#ffa69c;--focus:#ffd171;--tag:#2a3b33}
+body{background:var(--page);color:var(--text)}
+.card{background:var(--surface);border-color:var(--border)}
+.brand span,.eyebrow,.intro>p:last-child,.hint,li small,footer,#stateName{color:var(--muted)}
+.badge,.tag{background:var(--tag);color:var(--text);border-color:var(--border)}
+input,select{background:var(--field);color:var(--text);border-color:var(--border)}
+input::placeholder{color:var(--muted);opacity:1}
+button{background:var(--button);color:var(--text);border-color:var(--border)}
+button[aria-pressed=true],.primary{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
+.danger{color:var(--danger)}#status{color:var(--text)}li{border-color:var(--border)}
+button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline-color:var(--focus)}
+.appearance{display:flex;justify-content:flex-end;align-items:center;gap:10px;margin-top:14px}
+.appearance label{margin:0}.appearance select{width:auto;min-width:100px}
