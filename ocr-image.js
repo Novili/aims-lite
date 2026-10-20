@@ -2,8 +2,8 @@
  // Shared pixel processing: identical in the browser and the regression tests.
  function prepare(source,rect){
   const [rx,ry,rw,rh]=rect,sw=source.width,sh=source.height;
-  const left=Math.round(sw*rx),top=Math.round(sh*ry),cw=Math.round(sw*rw),ch=Math.round(sh*rh);
-  const height=180,width=Math.max(1,Math.round(cw*height/ch)),pad=0;
+  const left=Math.round(sw*rx),top=Math.round(sh*ry),cw=Math.max(1,Math.round(sw*rw)),ch=Math.max(1,Math.round(sh*rh));
+  const height=180,width=Math.min(1800,Math.max(1,Math.round(cw*height/ch))),pad=0;
   const gray=new Uint8Array(width*height),hist=new Uint32Array(256);
   for(let y=0;y<height;y++)for(let x=0;x<width;x++){
    const sx=Math.min(sw-1,left+Math.floor((x+.5)*cw/width)),sy=Math.min(sh-1,top+Math.floor((y+.5)*ch/height));
